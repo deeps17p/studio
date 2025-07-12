@@ -36,7 +36,7 @@ export function DashboardClient() {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Messages Enhanced</CardTitle>
@@ -67,7 +67,7 @@ export function DashboardClient() {
             <p className="text-xs text-muted-foreground">Saved for quick reuse</p>
           </CardContent>
         </Card>
-        <Card className="bg-primary text-primary-foreground">
+        <Card className="bg-primary text-primary-foreground sm:col-span-2 lg:col-span-1">
           <CardHeader className="pb-2">
             <CardTitle>Start Writing</CardTitle>
             <CardDescription className="text-primary-foreground/80">
@@ -84,7 +84,7 @@ export function DashboardClient() {
         </Card>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Message Tone Analysis</CardTitle>
@@ -102,6 +102,7 @@ export function DashboardClient() {
                     tickLine={false}
                     tickMargin={10}
                     axisLine={false}
+                    tickFormatter={(value) => value.substring(0, 3)}
                   />
                   <YAxis />
                   <Tooltip

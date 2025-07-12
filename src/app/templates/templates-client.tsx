@@ -85,7 +85,7 @@ export function TemplatesClient() {
           Create contextual sales templates powered by AI.
         </p>
       </div>
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Template Details</CardTitle>
@@ -173,7 +173,7 @@ export function TemplatesClient() {
               <div className="flex items-center justify-center h-full">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
-            ) : generatedTemplate ? (
+              ) : generatedTemplate ? (
               <>
                 <Textarea
                   value={generatedTemplate}

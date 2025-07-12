@@ -68,7 +68,7 @@ export function PhrasesClient() {
         </CardContent>
       </Card>
       
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
         {phrases.map((phrase, index) => (
           <Card key={index}>
             <CardContent className="p-4">
@@ -85,7 +85,7 @@ export function PhrasesClient() {
           </Card>
         ))}
         {phrases.length === 0 && (
-            <Card className="md:col-span-2 lg:col-span-3">
+            <Card className="sm:col-span-2 md:col-span-3">
                 <CardContent className="flex items-center justify-center h-48">
                     <p className="text-muted-foreground">No phrases saved yet. Add one above to get started.</p>
                 </CardContent>

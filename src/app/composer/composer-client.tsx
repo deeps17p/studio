@@ -92,7 +92,7 @@ export function ComposerClient() {
           Write your message and use AI to enhance it.
         </p>
       </div>
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         <Card className="lg:col-span-1">
           <CardHeader>
             <CardTitle>Your Message</CardTitle>
