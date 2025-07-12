@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -13,6 +14,7 @@ import {z} from 'genkit';
 
 const AnalyzeMessageToneInputSchema = z.object({
   message: z.string().describe('The drafted message to analyze.'),
+  productContext: z.string().optional().describe('The context of the product this message is about. This will be used to ensure the analysis is tailored to the product.'),
 });
 export type AnalyzeMessageToneInput = z.infer<typeof AnalyzeMessageToneInputSchema>;
 
@@ -33,6 +35,10 @@ const prompt = ai.definePrompt({
   prompt: `You are an AI assistant specialized in analyzing the tone of sales messages and providing suggestions for improvement.
 
   Analyze the following message and provide feedback on its tone, as well as suggestions on how to make it more positive and persuasive.
+  {{#if productContext}}
+  Use the following product context to inform your analysis:
+  Product Context: {{{productContext}}}
+  {{/if}}
 
   Message: {{{message}}}
   `,

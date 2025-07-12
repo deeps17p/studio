@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useTransition } from "react";
@@ -29,6 +30,11 @@ type ToneResult = {
   suggestions: string;
 };
 
+type ProductInfo = {
+  name: string;
+  description: string;
+};
+
 export function ComposerClient() {
   const [message, setMessage] = useState("");
   const [clarityResult, setClarityResult] = useState<ClarityResult | null>(
@@ -40,6 +46,7 @@ export function ComposerClient() {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const [, setStats] = useLocalStorage("salespilot-stats", { enhanced: 12, templates: 5 });
+  const [productInfo] = useLocalStorage<ProductInfo | null>("salespilot-product", null);
 
 
   const handleImproveClarity = () => {
@@ -50,7 +57,10 @@ export function ComposerClient() {
     startTransition(async () => {
       setToneResult(null);
       setActiveTab("clarity");
-      const result = await improveMessageClarityAction({ message });
+      const result = await improveMessageClarityAction({
+        message,
+        productContext: productInfo?.description,
+      });
       if (result.success) {
         setClarityResult(result.success);
         setStats(s => ({...s, enhanced: s.enhanced + 1}));
@@ -68,7 +78,10 @@ export function ComposerClient() {
     startTransition(async () => {
       setClarityResult(null);
       setActiveTab("tone");
-      const result = await analyzeMessageToneAction({ message });
+      const result = await analyzeMessageToneAction({
+        message,
+        productContext: productInfo?.description,
+      });
       if (result.success) {
         setToneResult(result.success);
       } else {
@@ -89,7 +102,7 @@ export function ComposerClient() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Message Composer</h1>
         <p className="text-muted-foreground">
-          Write your message and use AI to enhance it.
+          Write your message and use AI to enhance it with context from your product, {productInfo?.name || '...loading'}.
         </p>
       </div>
       <div className="grid gap-6 md:grid-cols-2">

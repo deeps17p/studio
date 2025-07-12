@@ -1,6 +1,7 @@
+
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useState, useTransition, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -46,11 +47,18 @@ const formSchema = z.object({
     .min(5, { message: "Scenario must be at least 5 characters." }),
 });
 
+type ProductInfo = {
+  name: string;
+  description: string;
+};
+
 export function TemplatesClient() {
   const [generatedTemplate, setGeneratedTemplate] = useState("");
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const [, setStats] = useLocalStorage("salespilot-stats", { enhanced: 12, templates: 5 });
+  const [productInfo] = useLocalStorage<ProductInfo | null>("salespilot-product", null);
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,6 +67,12 @@ export function TemplatesClient() {
       scenario: "",
     },
   });
+
+  useEffect(() => {
+    if (productInfo) {
+      form.setValue("productDescription", productInfo.description);
+    }
+  }, [productInfo, form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
@@ -82,7 +96,7 @@ export function TemplatesClient() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Template Generator</h1>
         <p className="text-muted-foreground">
-          Create contextual sales templates powered by AI.
+          Create contextual sales templates based on your product information.
         </p>
       </div>
       <div className="grid gap-6 md:grid-cols-2">
@@ -90,7 +104,7 @@ export function TemplatesClient() {
           <CardHeader>
             <CardTitle>Template Details</CardTitle>
             <CardDescription>
-              Provide details about your product and sales scenario.
+              Provide details about your sales scenario. The product description is pre-filled.
             </CardDescription>
           </CardHeader>
           <CardContent>

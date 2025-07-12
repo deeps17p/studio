@@ -1,3 +1,4 @@
+
 "use server";
 
 import { z } from "zod";
@@ -27,6 +28,7 @@ export async function generateSalesTemplateAction(values: GenerateSalesTemplateI
 
 const improveMessageClaritySchema = z.object({
   message: z.string(),
+  productContext: z.string().optional(),
 });
 
 export async function improveMessageClarityAction(values: ImproveMessageClarityInput) {
@@ -45,6 +47,7 @@ export async function improveMessageClarityAction(values: ImproveMessageClarityI
 
 const analyzeMessageToneSchema = z.object({
   message: z.string(),
+  productContext: z.string().optional(),
 });
 
 export async function analyzeMessageToneAction(values: AnalyzeMessageToneInput) {

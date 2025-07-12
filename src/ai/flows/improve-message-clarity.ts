@@ -1,4 +1,5 @@
-// use server'
+
+'use server';
 
 /**
  * @fileOverview AI agent to improve the clarity and impact of sales messages.
@@ -13,6 +14,7 @@ import {z} from 'genkit';
 
 const ImproveMessageClarityInputSchema = z.object({
   message: z.string().describe('The sales message to improve.'),
+  productContext: z.string().optional().describe('The context of the product this message is about. This will be used to ensure the improved message is tailored to the product.'),
 });
 export type ImproveMessageClarityInput = z.infer<typeof ImproveMessageClarityInputSchema>;
 
@@ -33,6 +35,10 @@ const improveMessageClarityPrompt = ai.definePrompt({
   prompt: `You are an AI-powered writing assistant specializing in sales communication.
 
 You will receive a sales message and provide an improved version that is clearer, more impactful, and persuasive.
+{{#if productContext}}
+You MUST tailor your improvements to the following product context:
+Product Context: {{{productContext}}}
+{{/if}}
 
 Explain the changes you made and why they enhance the message's effectiveness.
 
