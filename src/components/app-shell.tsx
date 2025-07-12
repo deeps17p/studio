@@ -35,12 +35,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar side="left" variant="sidebar" collapsible="icon">
         <SidebarHeader>
           <div className="flex items-center gap-2 p-2">
-            <Button variant="ghost" size="icon" className="shrink-0 size-8" asChild>
+            <Button variant="ghost" size="icon" className="shrink-0 size-10" asChild>
               <Link href="/dashboard">
-                <Logo className="size-5 fill-sidebar-primary" />
+                <Logo className="size-6 fill-sidebar-primary" />
               </Link>
             </Button>
-            <h1 className="text-lg font-semibold text-sidebar-primary truncate group-data-[collapsible=icon]:hidden">
+            <h1 className="text-xl font-semibold text-sidebar-primary truncate group-data-[collapsible=icon]:hidden">
               SalesPilot AI
             </h1>
           </div>
@@ -51,12 +51,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === item.href}
-                  className="justify-start"
+                  isActive={pathname.startsWith(item.href)}
+                  className="justify-start text-base h-12"
                   tooltip={{children: item.label}}
+                  size="lg"
                 >
                   <Link href={item.href}>
-                    <item.icon className="size-4 mr-2" />
+                    <item.icon className="size-5 mr-3" />
                     <span>{item.label}</span>
                   </Link>
                 </SidebarMenuButton>
@@ -66,11 +67,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </SidebarContent>
       </Sidebar>
       <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6 md:hidden">
+        <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6 md:hidden">
           <SidebarTrigger />
            <Link href="/dashboard" className="flex items-center gap-2">
-              <Logo className="size-5 fill-primary" />
-              <h1 className="text-lg font-semibold text-primary">SalesPilot AI</h1>
+              <Logo className="size-6 fill-primary" />
+              <h1 className="text-xl font-semibold text-primary">SalesPilot AI</h1>
            </Link>
         </header>
         <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">{children}</main>
