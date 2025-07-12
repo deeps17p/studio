@@ -176,6 +176,7 @@ export function TemplatesClient() {
           </CardContent>
         </Card>
         <Card className="min-h-[400px]">
+
           <CardHeader>
             <CardTitle>Generated Template</CardTitle>
             <CardDescription>
