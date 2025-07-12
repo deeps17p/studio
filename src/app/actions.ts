@@ -5,6 +5,8 @@ import { z } from "zod";
 import { generateSalesTemplate as generateSalesTemplateFlow, GenerateSalesTemplateInput } from '@/ai/flows/generate-sales-template';
 import { improveMessageClarity as improveMessageClarityFlow, ImproveMessageClarityInput } from '@/ai/flows/improve-message-clarity';
 import { analyzeMessageTone as analyzeMessageToneFlow, AnalyzeMessageToneInput } from '@/ai/flows/analyze-message-tone';
+import { researchProduct as researchProductFlow, ResearchProductInput } from '@/ai/flows/research-product';
+
 
 const generateSalesTemplateSchema = z.object({
   productDescription: z.string(),
@@ -62,4 +64,22 @@ export async function analyzeMessageToneAction(values: AnalyzeMessageToneInput) 
     console.error(error);
     return { failure: "Failed to analyze tone." };
   }
+}
+
+const researchProductSchema = z.object({
+  productName: z.string(),
+});
+
+export async function researchProductAction(values: ResearchProductInput) {
+    const validatedInput = researchProductSchema.safeParse(values);
+    if (!validatedInput.success) {
+        return { failure: "Invalid input." };
+    }
+    try {
+        const output = await researchProductFlow(validatedInput.data);
+        return { success: output };
+    } catch (error) {
+        console.error(error);
+        return { failure: "Failed to research product." };
+    }
 }
