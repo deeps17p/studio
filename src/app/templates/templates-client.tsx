@@ -69,7 +69,7 @@ export function TemplatesClient() {
   });
 
   useEffect(() => {
-    if (productInfo) {
+    if (productInfo?.description) {
       form.setValue("productDescription", productInfo.description);
     }
   }, [productInfo, form.setValue]);
