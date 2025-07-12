@@ -40,6 +40,11 @@ type ProductInfo = {
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [productInfo] = useLocalStorage<ProductInfo | null>("salespilot-product", null);
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
 
 
   return (
@@ -81,7 +86,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <Separator className="my-2" />
           <div className="p-4 text-center">
             <p className="text-xs text-muted-foreground">Customized for</p>
-            <p className="font-semibold text-foreground">{productInfo?.name || '...'}</p>
+            <p className="font-semibold text-foreground">{isClient ? productInfo?.name || '...' : '...'}</p>
           </div>
         </SidebarFooter>
       </Sidebar>
