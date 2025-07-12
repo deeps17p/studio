@@ -10,7 +10,7 @@ import { researchProduct as researchProductFlow, ResearchProductInput } from '@/
 
 const generateSalesTemplateSchema = z.object({
   productDescription: z.string(),
-  messageType: z.enum(['Email', 'WhatsApp', 'text message']),
+  messageType: z.enum(['email', 'WhatsApp', 'text message']),
   scenario: z.string(),
 });
 
@@ -20,7 +20,7 @@ export async function generateSalesTemplateAction(values: GenerateSalesTemplateI
     return { failure: "Invalid input." };
   }
   try {
-    const output = await generateSalesTemplateFlow(validatedInput.data);
+    const output = await generateSalesTemplateFlow(validatedInput.data as GenerateSalesTemplateInput);
     return { success: output };
   } catch (error) {
     console.error(error);
