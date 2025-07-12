@@ -33,12 +33,11 @@ export default function OnboardingPage() {
   const [isResearching, setIsResearching] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
 
-  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const { toast } = useToast();
 
   useEffect(() => {
-    if (productInfo) {
+    if (productInfo?.name && productInfo?.description) {
       router.replace("/dashboard");
     } else {
       setIsCheckingAuth(false);
@@ -62,21 +61,21 @@ export default function OnboardingPage() {
   }, [isResearching]);
 
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (name.trim()) {
-      setIsResearching(true);
-      setCurrentStep(0);
-      startTransition(async () => {
-        const result = await researchProductAction({ productName: name });
-        if (result.success) {
-          setProductInfo({ name, description: result.success.productDescription });
-          // The useEffect listening to productInfo will handle the redirect.
-        } else {
-          toast({ title: "Research Failed", description: result.failure, variant: "destructive" });
-          setIsResearching(false);
-        }
-      });
+    if (!name.trim()) return;
+
+    setIsResearching(true);
+    setCurrentStep(0);
+    
+    const result = await researchProductAction({ productName: name });
+    
+    if (result.success) {
+      setProductInfo({ name, description: result.success.productDescription });
+      // The useEffect will catch the change and redirect
+    } else {
+      toast({ title: "Research Failed", description: result.failure, variant: "destructive" });
+      setIsResearching(false);
     }
   };
 
@@ -127,8 +126,8 @@ export default function OnboardingPage() {
               />
             </div>
             
-            <Button type="submit" className="w-full" size="lg" disabled={!name.trim() || isPending}>
-              {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+            <Button type="submit" className="w-full" size="lg" disabled={!name.trim() || isResearching}>
+              {isResearching ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               Start Research
             </Button>
           </form>
