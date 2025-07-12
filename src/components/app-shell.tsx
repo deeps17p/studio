@@ -32,27 +32,28 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <SidebarProvider>
-      <Sidebar>
+      <Sidebar side="left" variant="sidebar" collapsible="icon">
         <SidebarHeader>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="shrink-0" asChild>
+          <div className="flex items-center gap-2 p-2">
+            <Button variant="ghost" size="icon" className="shrink-0 size-8" asChild>
               <Link href="/dashboard">
-                <Logo className="size-5 fill-primary" />
+                <Logo className="size-5 fill-sidebar-primary" />
               </Link>
             </Button>
-            <h1 className="text-lg font-semibold text-primary truncate">
+            <h1 className="text-lg font-semibold text-sidebar-primary truncate group-data-[collapsible=icon]:hidden">
               SalesPilot AI
             </h1>
           </div>
         </SidebarHeader>
         <SidebarContent>
-          <SidebarMenu>
+          <SidebarMenu className="p-2">
             {navItems.map((item) => (
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === item.href}
                   className="justify-start"
+                  tooltip={{children: item.label}}
                 >
                   <Link href={item.href}>
                     <item.icon className="size-4 mr-2" />
@@ -67,9 +68,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <SidebarInset>
         <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6 md:hidden">
           <SidebarTrigger />
-           <h1 className="text-lg font-semibold text-primary">SalesPilot AI</h1>
+           <Link href="/dashboard" className="flex items-center gap-2">
+              <Logo className="size-5 fill-primary" />
+              <h1 className="text-lg font-semibold text-primary">SalesPilot AI</h1>
+           </Link>
         </header>
-        <main className="flex-1 overflow-auto p-4 sm:p-6">{children}</main>
+        <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );
