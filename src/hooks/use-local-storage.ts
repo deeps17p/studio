@@ -8,30 +8,21 @@ import { useState, useEffect, useCallback } from 'react';
 // On the server, it will return the initial value.
 // On the client, it will read from localStorage and update the value.
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val: T) => T)) => void] {
-  const readValue = useCallback((): T => {
+  // Pass an initializer function to useState so it only runs on the client, once.
+  const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === 'undefined') {
       return initialValue;
     }
-
     try {
       const item = window.localStorage.getItem(key);
-      return item ? (JSON.parse(item) as T) : initialValue;
+      return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       console.warn(`Error reading localStorage key “${key}”:`, error);
       return initialValue;
     }
-  }, [initialValue, key]);
-
-  const [storedValue, setStoredValue] = useState<T>(readValue);
+  });
 
   const setValue = (value: T | ((val: T) => T)) => {
-    // Prevent build errors and errors deleting ls in dev mode
-    if (typeof window === 'undefined') {
-      console.warn(
-        `Tried setting localStorage key “${key}” even though environment is not a client`
-      );
-    }
-    
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
@@ -43,9 +34,18 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
     }
   };
   
+  // This effect synchronizes changes across tabs
   useEffect(() => {
-    setStoredValue(readValue());
-  }, [readValue]);
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === key && e.newValue !== null) {
+        setStoredValue(JSON.parse(e.newValue));
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [key]);
 
 
   return [storedValue, setValue];
