@@ -10,7 +10,7 @@ import { researchProduct as researchProductFlow, ResearchProductInput } from '@/
 
 const generateSalesTemplateSchema = z.object({
   productDescription: z.string(),
-  messageType: z.enum(['email', 'WhatsApp', 'text message']),
+  messageType: z.enum(['Email', 'WhatsApp', 'text message']),
   scenario: z.string(),
 });
 
