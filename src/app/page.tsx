@@ -66,14 +66,12 @@ export default function OnboardingPage() {
     e.preventDefault();
     if (name.trim()) {
       setIsResearching(true);
+      setCurrentStep(0);
       startTransition(async () => {
         const result = await researchProductAction({ productName: name });
         if (result.success) {
-          // Ensure animation runs for a bit
-          setTimeout(() => {
-             setProductInfo({ name, description: result.success.productDescription });
-             // useEffect will handle the redirect
-          }, (researchSteps.length - currentStep) * 1500);
+          setProductInfo({ name, description: result.success.productDescription });
+          // The useEffect listening to productInfo will handle the redirect.
         } else {
           toast({ title: "Research Failed", description: result.failure, variant: "destructive" });
           setIsResearching(false);
