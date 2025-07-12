@@ -72,7 +72,7 @@ export function TemplatesClient() {
     if (productInfo) {
       form.setValue("productDescription", productInfo.description);
     }
-  }, [productInfo, form]);
+  }, [productInfo, form.setValue]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
