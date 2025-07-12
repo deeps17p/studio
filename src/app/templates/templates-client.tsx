@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useTransition, useEffect } from "react";
+import React, { useState, useTransition, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -68,11 +68,12 @@ export function TemplatesClient() {
     },
   });
 
+  const { setValue } = form;
   useEffect(() => {
     if (productInfo?.description) {
-      form.setValue("productDescription", productInfo.description);
+      setValue("productDescription", productInfo.description);
     }
-  }, [productInfo, form.setValue]);
+  }, [productInfo?.description, setValue]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
