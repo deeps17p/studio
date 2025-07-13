@@ -20,7 +20,7 @@ export async function generateSalesTemplateAction(values: GenerateSalesTemplateI
     return { failure: "Invalid input." };
   }
   try {
-    const output = await generateSalesTemplateFlow(validatedInput.data as GenerateSalesTemplateInput);
+    const output = await generateSalesTemplateFlow(validatedInput.data);
     return { success: output };
   } catch (error) {
     console.error(error);
