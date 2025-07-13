@@ -1,7 +1,7 @@
 
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -35,6 +35,11 @@ const NeumorphicCard = ({ children, className }: { children: React.ReactNode; cl
 export function DashboardClient() {
   const [phrases] = useLocalStorage<string[]>("frequent-phrases", []);
   const [stats] = useLocalStorage("salespilot-stats", { enhanced: 12, templates: 5 });
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const StatCard = ({ icon, title, value, subtitle }: { icon: React.ElementType, title: string, value: string | number, subtitle: string }) => (
     <NeumorphicCard>
@@ -59,9 +64,9 @@ export function DashboardClient() {
       </header>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        <StatCard icon={PenSquare} title="Messages Enhanced" value={stats.enhanced} subtitle="AI improvements applied" />
-        <StatCard icon={FileText} title="Templates Used" value={stats.templates} subtitle="Generated from product info" />
-        <StatCard icon={BookText} title="Frequent Phrases" value={phrases.length} subtitle="Saved for quick reuse" />
+        <StatCard icon={PenSquare} title="Messages Enhanced" value={isClient ? stats.enhanced : '...'} subtitle="AI improvements applied" />
+        <StatCard icon={FileText} title="Templates Used" value={isClient ? stats.templates : '...'} subtitle="Generated from product info" />
+        <StatCard icon={BookText} title="Frequent Phrases" value={isClient ? phrases.length : '...'} subtitle="Saved for quick reuse" />
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
