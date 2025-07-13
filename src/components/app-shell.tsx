@@ -3,8 +3,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { BookText, LayoutDashboard, PenSquare, FileText } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { BookText, LayoutDashboard, PenSquare, FileText, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -23,6 +23,18 @@ import { Logo } from "@/components/icons";
 import { Button } from "./ui/button";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { Separator } from "./ui/separator";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 
 const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -39,13 +51,18 @@ type ProductInfo = {
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [productInfo] = useLocalStorage<ProductInfo | null>("salespilot-product", null);
+  const router = useRouter();
+  const [productInfo, setProductInfo] = useLocalStorage<ProductInfo | null>("salespilot-product", null);
   const [isClient, setIsClient] = React.useState(false);
 
   React.useEffect(() => {
     setIsClient(true);
   }, []);
 
+  const handleChangeProduct = () => {
+    setProductInfo(null);
+    router.push('/');
+  }
 
   return (
     <SidebarProvider>
@@ -84,9 +101,31 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </SidebarContent>
         <SidebarFooter className="mt-auto group-data-[collapsible=icon]:hidden">
           <Separator className="my-2" />
-          <div className="p-4 text-center">
-            <p className="text-xs text-muted-foreground">Customized for</p>
-            <p className="font-semibold text-foreground">{isClient ? productInfo?.name || '...' : '...'}</p>
+          <div className="p-4 space-y-2">
+            <div>
+              <p className="text-xs text-muted-foreground">Customized for</p>
+              <p className="font-semibold text-foreground">{isClient ? productInfo?.name || '...' : '...'}</p>
+            </div>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                 <Button variant="outline" className="w-full">
+                  Change Product
+                  <ChevronsUpDown className="ml-2 h-4 w-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Change Product?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will clear your current product context and return you to the onboarding screen. Are you sure?
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleChangeProduct}>Continue</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </SidebarFooter>
       </Sidebar>
