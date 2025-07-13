@@ -1,12 +1,13 @@
+
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Copy, Trash2, PlusCircle } from "lucide-react";
+import { Copy, Trash2, PlusCircle, Loader2 } from "lucide-react";
 
 export function PhrasesClient() {
   const [phrases, setPhrases] = useLocalStorage<string[]>("frequent-phrases", [
@@ -16,6 +17,11 @@ export function PhrasesClient() {
   ]);
   const [newPhrase, setNewPhrase] = useState("");
   const { toast } = useToast();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const addPhrase = () => {
     if (newPhrase.trim() === "") {
@@ -69,22 +75,29 @@ export function PhrasesClient() {
       </Card>
       
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-        {phrases.map((phrase, index) => (
-          <Card key={index}>
-            <CardContent className="p-4">
-              <p className="text-sm text-foreground mb-4 h-16">{phrase}</p>
-            </CardContent>
-            <CardFooter className="flex justify-end gap-2 p-4 pt-0">
-                <Button variant="outline" size="icon" onClick={() => copyPhrase(phrase)}>
-                  <Copy className="h-4 w-4" />
-                </Button>
-                <Button variant="destructive" size="icon" onClick={() => deletePhrase(index)}>
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-            </CardFooter>
-          </Card>
-        ))}
-        {phrases.length === 0 && (
+        {!isClient ? (
+            <Card className="sm:col-span-2 md:col-span-3">
+              <CardContent className="flex items-center justify-center h-48">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </CardContent>
+            </Card>
+        ) : phrases.length > 0 ? (
+          phrases.map((phrase, index) => (
+            <Card key={index}>
+              <CardContent className="p-4">
+                <p className="text-sm text-foreground mb-4 h-16">{phrase}</p>
+              </CardContent>
+              <CardFooter className="flex justify-end gap-2 p-4 pt-0">
+                  <Button variant="outline" size="icon" onClick={() => copyPhrase(phrase)}>
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                  <Button variant="destructive" size="icon" onClick={() => deletePhrase(index)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+              </CardFooter>
+            </Card>
+          ))
+        ) : (
             <Card className="sm:col-span-2 md:col-span-3">
                 <CardContent className="flex items-center justify-center h-48">
                     <p className="text-muted-foreground">No phrases saved yet. Add one above to get started.</p>
