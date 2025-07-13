@@ -41,7 +41,7 @@ export function ComposerClient() {
     null
   );
   const [toneResult, setToneResult] = useState<ToneResult | null>(null);
-  const [activeTab, setActiveTab] = useState<"clarity" | "tone">("clarity");
+  const [activeTab, setActiveTab] = useState<"clarity" | "tone" | null>(null);
 
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
@@ -56,6 +56,7 @@ export function ComposerClient() {
     }
     startTransition(async () => {
       setToneResult(null);
+      setClarityResult(null);
       setActiveTab("clarity");
       const result = await improveMessageClarityAction({
         message,
@@ -66,6 +67,7 @@ export function ComposerClient() {
         setStats(s => ({...s, enhanced: s.enhanced + 1}));
       } else {
         toast({ title: "Error", description: result.failure, variant: "destructive" });
+        setActiveTab(null);
       }
     });
   };
@@ -77,6 +79,7 @@ export function ComposerClient() {
     }
     startTransition(async () => {
       setClarityResult(null);
+      setToneResult(null);
       setActiveTab("tone");
       const result = await analyzeMessageToneAction({
         message,
@@ -86,6 +89,7 @@ export function ComposerClient() {
         setToneResult(result.success);
       } else {
         toast({ title: "Error", description: result.failure, variant: "destructive" });
+        setActiveTab(null);
       }
     });
   };
@@ -94,6 +98,7 @@ export function ComposerClient() {
     if (clarityResult) {
       setMessage(clarityResult.improvedMessage);
       setClarityResult(null);
+      setActiveTab(null);
     }
   }
 
