@@ -105,14 +105,14 @@ export function ComposerClient() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Message Composer</h1>
-        <p className="text-muted-foreground">
-          Write your message and use AI to enhance it with context from your product, {productInfo?.name || '...loading'}.
+    <div className="flex flex-col gap-5">
+       <header className="space-y-1.5">
+        <h1 className="text-2xl font-semibold tracking-tight">Message Composer</h1>
+        <p className="text-sm text-muted-foreground">
+          Write your message and use AI to enhance it with context from your product.
         </p>
-      </div>
-      <div className="grid gap-6 md:grid-cols-2">
+      </header>
+      <div className="grid gap-5 md:grid-cols-2">
         <Card className="lg:col-span-1">
           <CardHeader>
             <CardTitle>Your Message</CardTitle>
@@ -151,30 +151,30 @@ export function ComposerClient() {
               </div>
             ) : clarityResult ? (
               <div className="space-y-4">
-                <h3 className="font-semibold">Improved Message</h3>
+                <h3 className="font-semibold text-sm">Improved Message</h3>
                 <Textarea
                   value={clarityResult.improvedMessage}
                   readOnly
                   rows={6}
                   className="bg-secondary"
                 />
-                 <Button onClick={useImprovedMessage}>
+                 <Button onClick={useImprovedMessage} size="sm">
                     Use this version <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Separator />
-                <h3 className="font-semibold">Explanation</h3>
+                <h3 className="font-semibold text-sm">Explanation</h3>
                 <p className="text-sm text-muted-foreground whitespace-pre-wrap">{clarityResult.explanation}</p>
               </div>
             ) : toneResult ? (
               <div className="space-y-4">
-                <h3 className="font-semibold">Overall Tone: <span className="text-primary">{toneResult.tone}</span></h3>
+                <h3 className="font-semibold text-sm">Overall Tone: <span className="text-primary">{toneResult.tone}</span></h3>
                 <Separator />
-                <h3 className="font-semibold">Suggestions for Improvement</h3>
+                <h3 className="font-semibold text-sm">Suggestions for Improvement</h3>
                 <p className="text-sm text-muted-foreground whitespace-pre-wrap">{toneResult.suggestions}</p>
               </div>
             ) : (
               <div className="flex items-center justify-center h-48 text-muted-foreground">
-                <p>Click a button to get started</p>
+                <p className="text-sm">Click a button to get started</p>
               </div>
             )}
           </CardContent>

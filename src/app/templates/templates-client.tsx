@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useTransition, useEffect, useCallback } from "react";
+import React, { useState, useTransition, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -59,7 +59,6 @@ export function TemplatesClient() {
   const [, setStats] = useLocalStorage("salespilot-stats", { enhanced: 12, templates: 5 });
   const [productInfo] = useLocalStorage<ProductInfo | null>("salespilot-product", null);
 
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -68,12 +67,11 @@ export function TemplatesClient() {
     },
   });
 
-  const { setValue } = form;
   useEffect(() => {
     if (productInfo?.description) {
-      setValue("productDescription", productInfo.description);
+      form.setValue("productDescription", productInfo.description);
     }
-  }, [productInfo?.description, setValue]);
+  }, [productInfo?.description, form.setValue]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
@@ -93,14 +91,14 @@ export function TemplatesClient() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Template Generator</h1>
-        <p className="text-muted-foreground">
+    <div className="flex flex-col gap-5">
+      <header className="space-y-1.5">
+        <h1 className="text-2xl font-semibold tracking-tight">Template Generator</h1>
+        <p className="text-sm text-muted-foreground">
           Create contextual sales templates based on your product information.
         </p>
-      </div>
-      <div className="grid gap-6 md:grid-cols-2">
+      </header>
+      <div className="grid gap-5 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Template Details</CardTitle>
@@ -177,7 +175,6 @@ export function TemplatesClient() {
           </CardContent>
         </Card>
         <Card className="min-h-[400px]">
-
           <CardHeader>
             <CardTitle>Generated Template</CardTitle>
             <CardDescription>
@@ -208,7 +205,7 @@ export function TemplatesClient() {
               </>
             ) : (
               <div className="flex items-center justify-center h-48 text-muted-foreground">
-                <p>Fill out the form to generate a template</p>
+                <p className="text-sm">Fill out the form to generate a template</p>
               </div>
             )}
           </CardContent>

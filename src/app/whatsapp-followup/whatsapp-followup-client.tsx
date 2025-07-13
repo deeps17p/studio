@@ -76,14 +76,14 @@ export function WhatsappFollowupClient() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">WhatsApp Objection Handler</h1>
-        <p className="text-muted-foreground">
+    <div className="flex flex-col gap-5">
+      <header className="space-y-1.5">
+        <h1 className="text-2xl font-semibold tracking-tight">WhatsApp Objection Handler</h1>
+        <p className="text-sm text-muted-foreground">
           Paste a conversation, provide context, and get an AI-powered reply.
         </p>
-      </div>
-      <div className="grid gap-6 md:grid-cols-2">
+      </header>
+      <div className="grid gap-5 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Conversation Details</CardTitle>
@@ -166,7 +166,7 @@ export function WhatsappFollowupClient() {
               </>
             ) : (
               <div className="flex items-center justify-center h-48 text-muted-foreground">
-                <p>Fill out the form to generate a reply</p>
+                <p className="text-sm">Fill out the form to generate a reply</p>
               </div>
             )}
           </CardContent>

@@ -9,7 +9,6 @@ import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 import Link from "next/link";
 import { BookText, FileText, PenSquare, ArrowRight, Lightbulb } from "lucide-react";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { cn } from "@/lib/utils";
 
 const chartData = [
   { tone: "Confident", count: 186 },
@@ -26,12 +25,6 @@ const chartConfig = {
   },
 };
 
-const NeumorphicCard = ({ children, className }: { children: React.ReactNode; className?: string }) => (
-  <div className={cn("rounded-2xl bg-card p-6 shadow-[5px_5px_10px_#1a1a1a,-5px_-5px_10px_#2e2e2e]", className)}>
-    {children}
-  </div>
-);
-
 export function DashboardClient() {
   const [phrases] = useLocalStorage<string[]>("frequent-phrases", []);
   const [stats] = useLocalStorage("salespilot-stats", { enhanced: 12, templates: 5 });
@@ -42,99 +35,106 @@ export function DashboardClient() {
   }, []);
 
   const StatCard = ({ icon, title, value, subtitle }: { icon: React.ElementType, title: string, value: string | number, subtitle: string }) => (
-    <NeumorphicCard>
-      <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
-        {React.createElement(icon, { className: "h-5 w-5 text-muted-foreground" })}
-      </div>
-      <div>
-        <div className="text-3xl font-bold">{value}</div>
-        <p className="text-xs text-muted-foreground">{subtitle}</p>
-      </div>
-    </NeumorphicCard>
+    <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">{title}</CardTitle>
+            {React.createElement(icon, { className: "h-4 w-4 text-muted-foreground" })}
+        </CardHeader>
+        <CardContent>
+            <div className="text-2xl font-bold">{value}</div>
+            <p className="text-xs text-muted-foreground">{subtitle}</p>
+        </CardContent>
+    </Card>
   );
 
   return (
-    <div className="flex flex-col gap-8">
-      <header className="space-y-1">
-        <h1 className="text-4xl font-bold tracking-tighter">Dashboard</h1>
-        <p className="text-muted-foreground text-lg">
+    <div className="flex flex-col gap-5">
+      <header className="space-y-1.5">
+        <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+        <p className="text-sm text-muted-foreground">
           Here's your sales activity at a glance.
         </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
         <StatCard icon={PenSquare} title="Messages Enhanced" value={isClient ? stats.enhanced : '...'} subtitle="AI improvements applied" />
         <StatCard icon={FileText} title="Templates Used" value={isClient ? stats.templates : '...'} subtitle="Generated from product info" />
         <StatCard icon={BookText} title="Frequent Phrases" value={isClient ? phrases.length : '...'} subtitle="Saved for quick reuse" />
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
-        <div className="lg:col-span-3">
-          <NeumorphicCard className="h-full">
-            <h3 className="text-lg font-semibold">Message Tone Analysis</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              A summary of tones from your recently analyzed messages.
-            </p>
-            <div className="h-72 w-full">
-              <ChartContainer config={chartConfig} className="w-full h-full">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
+        <Card className="lg:col-span-3">
+            <CardHeader>
+                <CardTitle>Message Tone Analysis</CardTitle>
+                <CardDescription>A summary of tones from your recently analyzed messages.</CardDescription>
+            </CardHeader>
+            <CardContent className="pl-2">
+              <ChartContainer config={chartConfig} className="w-full h-72">
                 <ResponsiveContainer>
-                  <BarChart data={chartData} margin={{ top: 20, right: 20, bottom: 5, left: 0 }}>
-                    <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="hsl(var(--border) / 0.5)" />
+                  <BarChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: 0 }}>
+                    <CartesianGrid vertical={false} strokeDasharray="3 3" />
                     <XAxis
                       dataKey="tone"
                       tickLine={false}
                       tickMargin={10}
                       axisLine={false}
                       stroke="hsl(var(--muted-foreground))"
+                      fontSize={12}
                     />
-                    <YAxis tickLine={false} axisLine={false} stroke="hsl(var(--muted-foreground))" />
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      stroke="hsl(var(--muted-foreground))"
+                      fontSize={12}
+                    />
                     <Tooltip
                       cursor={false}
                       content={<ChartTooltipContent indicator="dot" />}
                     />
-                    <Bar dataKey="count" fill="hsl(var(--primary))" radius={[8, 8, 0, 0]} />
+                    <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </ChartContainer>
-            </div>
-          </NeumorphicCard>
-        </div>
+            </CardContent>
+          </Card>
+        
 
-        <div className="lg:col-span-2 space-y-6">
-          <NeumorphicCard>
-            <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-            <div className="space-y-3">
-               <Button asChild className="w-full justify-start text-base py-6" size="lg">
+        <div className="lg:col-span-2 space-y-5">
+          <Card>
+            <CardHeader>
+                <CardTitle>Quick Actions</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+               <Button asChild className="w-full justify-start text-base" size="lg">
                   <Link href="/composer">
                     <PenSquare className="mr-3 h-5 w-5" />
                     Compose New Message
                   </Link>
                 </Button>
-                <Button asChild variant="secondary" className="w-full justify-start text-base py-6" size="lg">
+                <Button asChild variant="secondary" className="w-full justify-start text-base" size="lg">
                   <Link href="/templates">
                     <FileText className="mr-3 h-5 w-5" />
                     Generate a Template
                   </Link>
                 </Button>
-            </div>
-          </NeumorphicCard>
+            </CardContent>
+          </Card>
           
-          <NeumorphicCard>
-             <div className="flex items-start gap-4">
+          <Card>
+            <CardContent className="p-6 flex items-start gap-4">
                <div className="flex-shrink-0">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                  <Lightbulb className="h-6 w-6" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Lightbulb className="h-5 w-5" />
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-base">Sales Tip of the Day</h3>
-                <p className="text-sm text-muted-foreground mt-1">
+                <h3 className="font-semibold text-sm">Sales Tip of the Day</h3>
+                <p className="text-xs text-muted-foreground mt-1">
                   Lead with the buyer's pain point. Address their problem before you mention your product.
                 </p>
               </div>
-            </div>
-          </NeumorphicCard>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
