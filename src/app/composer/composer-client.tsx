@@ -64,6 +64,7 @@ export function ComposerClient() {
       });
       if (result.success) {
         setClarityResult(result.success);
+        setToneResult(null);
         setStats(s => ({...s, enhanced: s.enhanced + 1}));
       } else {
         toast({ title: "Error", description: result.failure, variant: "destructive" });
@@ -87,6 +88,7 @@ export function ComposerClient() {
       });
       if (result.success) {
         setToneResult(result.success);
+        setClarityResult(null);
       } else {
         toast({ title: "Error", description: result.failure, variant: "destructive" });
         setActiveTab(null);
