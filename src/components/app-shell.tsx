@@ -4,7 +4,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookText, LayoutDashboard, PenSquare, FileText, ChevronsUpDown } from "lucide-react";
+import { BookText, LayoutDashboard, PenSquare, FileText, ChevronsUpDown, Bot } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -41,6 +41,7 @@ const navItems = [
   { href: "/composer", icon: PenSquare, label: "Composer" },
   { href: "/templates", icon: FileText, label: "Templates" },
   { href: "/phrases", icon: BookText, label: "Phrases" },
+  { href: "/whatsapp-followup", icon: Bot, label: "Follow-up" },
 ];
 
 type ProductInfo = {

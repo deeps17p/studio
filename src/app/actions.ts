@@ -6,6 +6,7 @@ import { generateSalesTemplate as generateSalesTemplateFlow, GenerateSalesTempla
 import { improveMessageClarity as improveMessageClarityFlow, ImproveMessageClarityInput } from '@/ai/flows/improve-message-clarity';
 import { analyzeMessageTone as analyzeMessageToneFlow, AnalyzeMessageToneInput } from '@/ai/flows/analyze-message-tone';
 import { researchProduct as researchProductFlow, ResearchProductInput } from '@/ai/flows/research-product';
+import { handleWhatsappObjection as handleWhatsappObjectionFlow, HandleWhatsappObjectionInput } from '@/ai/flows/handle-whatsapp-objection';
 
 
 const generateSalesTemplateSchema = z.object({
@@ -81,5 +82,25 @@ export async function researchProductAction(values: ResearchProductInput) {
     } catch (error) {
         console.error(error);
         return { failure: "Failed to research product." };
+    }
+}
+
+const handleWhatsappObjectionSchema = z.object({
+  conversationThread: z.string(),
+  context: z.string(),
+  productContext: z.string().optional(),
+});
+
+export async function handleWhatsappObjectionAction(values: HandleWhatsappObjectionInput) {
+    const validatedInput = handleWhatsappObjectionSchema.safeParse(values);
+    if (!validatedInput.success) {
+        return { failure: "Invalid input." };
+    }
+    try {
+        const output = await handleWhatsappObjectionFlow(validatedInput.data);
+        return { success: output };
+    } catch (error) {
+        console.error(error);
+        return { failure: "Failed to handle objection." };
     }
 }
