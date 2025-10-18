@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 import Link from "next/link";
-import { BookText, FileText, PenSquare, ArrowRight, Lightbulb } from "lucide-react";
+import { BookText, FileText, PenSquare, Lightbulb } from "lucide-react";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
 const chartData = [

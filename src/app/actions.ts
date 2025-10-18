@@ -77,7 +77,7 @@ export async function researchProductAction(values: ResearchProductInput) {
         return { failure: "Invalid input." };
     }
     try {
-        const output = await researchProductFlow(validatedInput.data);
+        const output = await researchProductFlow(values);
         return { success: output };
     } catch (error) {
         console.error(error);
@@ -97,7 +97,7 @@ export async function handleWhatsappObjectionAction(values: HandleWhatsappObject
         return { failure: "Invalid input." };
     }
     try {
-        const output = await handleWhatsappObjectionFlow(validatedInput.data);
+        const output = await handleWhatsappObjectionFlow(values);
         return { success: output };
     } catch (error) {
         console.error(error);

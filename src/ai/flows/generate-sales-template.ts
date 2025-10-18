@@ -25,7 +25,7 @@ const GenerateSalesTemplateInputSchema = z.object({
   scenario: z
     .string()
     .describe(
-      'The specific sales scenario or context for the template (e.g., initial contact, follow-up, special offer).'
+      'The specific sales scenario for the template (e.g., initial contact, follow-up, special offer).'
     ),
 });
 export type GenerateSalesTemplateInput = z.infer<typeof GenerateSalesTemplateInputSchema>;
