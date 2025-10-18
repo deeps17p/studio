@@ -26,7 +26,6 @@ const chartConfig = {
 };
 
 export function DashboardClient() {
-  const [phrases] = useLocalStorage<string[]>("frequent-phrases", []);
   const [stats] = useLocalStorage("salespilot-stats", { enhanced: 12, templates: 5 });
   const [isClient, setIsClient] = useState(false);
 
@@ -56,10 +55,9 @@ export function DashboardClient() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
         <StatCard icon={PenSquare} title="Messages Enhanced" value={isClient ? stats.enhanced : '...'} subtitle="AI improvements applied" />
         <StatCard icon={FileText} title="Templates Used" value={isClient ? stats.templates : '...'} subtitle="Generated from product info" />
-        <StatCard icon={BookText} title="Frequent Phrases" value={isClient ? phrases.length : '...'} subtitle="Saved for quick reuse" />
       </div>
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
