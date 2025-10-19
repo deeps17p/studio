@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
@@ -26,7 +26,7 @@ const chartConfig = {
 };
 
 export function DashboardClient() {
-  const [stats] = useLocalStorage("salespilot-stats", { enhanced: 12, templates: 5 });
+  const [stats, setStats] = useLocalStorage("salespilot-stats", { enhanced: 12, templates: 5 });
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -68,30 +68,28 @@ export function DashboardClient() {
             </CardHeader>
             <CardContent className="pl-2">
               <ChartContainer config={chartConfig} className="w-full h-72">
-                <ResponsiveContainer>
-                  <BarChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: 0 }}>
-                    <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey="tone"
-                      tickLine={false}
-                      tickMargin={10}
-                      axisLine={false}
-                      stroke="hsl(var(--muted-foreground))"
-                      fontSize={12}
-                    />
-                    <YAxis
-                      tickLine={false}
-                      axisLine={false}
-                      stroke="hsl(var(--muted-foreground))"
-                      fontSize={12}
-                    />
-                    <Tooltip
-                      cursor={false}
-                      content={<ChartTooltipContent indicator="dot" />}
-                    />
-                    <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+                <BarChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: 0 }} width={426} height={288}>
+                  <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="tone"
+                    tickLine={false}
+                    tickMargin={10}
+                    axisLine={false}
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={12}
+                  />
+                  <YAxis
+                    tickLine={false}
+                    axisLine={false}
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={12}
+                  />
+                  <Tooltip
+                    cursor={false}
+                    content={<ChartTooltipContent indicator="dot" />}
+                  />
+                  <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                </BarChart>
               </ChartContainer>
             </CardContent>
           </Card>

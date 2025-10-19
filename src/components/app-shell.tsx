@@ -102,9 +102,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <SidebarFooter className="mt-auto group-data-[collapsible=icon]:hidden">
           <Separator className="my-2" />
           <div className="p-4 space-y-2">
-            <div>
+            <div className="space-y-1">
               <p className="text-xs text-muted-foreground">Customized for</p>
-              <p className="font-semibold text-foreground">{isClient ? productInfo?.name || '...' : '...'}</p>
+              <div className="font-semibold text-foreground">{isClient ? productInfo?.name || '...' : '...'}</div>
             </div>
             <AlertDialog>
               <AlertDialogTrigger asChild>
